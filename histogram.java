@@ -1,4 +1,5 @@
-// Author: Timothy Chu
+// Author: Timothy Chu & Michael Wong
+// Lab 7
 // CPE369 - Section 01
 
 import com.alexholmes.json.mapreduce.MultiLineJsonInputFormat;
@@ -23,22 +24,24 @@ public class histogram extends Configured implements Tool {
 
    public static class JsonMapper
          extends Mapper<LongWritable, Text, Text, IntWritable> {
-      private Text        outputKey   = new Text();
+      private Text outputKey = new Text();
 
       @Override
       public void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
          try {
             JSONObject json = new JSONObject(value.toString());
-               if (json.has("action")) {
-                  JSONObject action = json.getJSONObject("action");
-                  if(action.get("actionType").equals("Move")) {
-                     JSONObject location = action.getJSONObject("location");
-                     outputKey.set("(" + location.get("x") + "," + location.get("y") + ")");
-                     context.write(outputKey, new IntWritable(1));
-                  }
+            if (json.has("action")) {
+               JSONObject action = json.getJSONObject("action");
+               if (action.get("actionType").equals("Move")) {
+                  JSONObject location = action.getJSONObject("location");
+                  outputKey.set("(" + location.get("x") + "," + location.get("y") + ")");
+                  context.write(outputKey, new IntWritable(1));
                }
-         } catch (Exception e) {System.out.println(e); }
+            }
+         } catch (Exception e) {
+            System.out.println(e);
+         }
       }
    }
 
@@ -78,17 +81,9 @@ public class histogram extends Configured implements Tool {
    }
 
    public static void main(String[] args) throws Exception {
-//      if (args.length != 2) {
-//         System.out.println("Input format is: <input file name> <output directory name>\n");
-//         System.exit(-1);
-//      }
-
       //RUN JSON MAP-REDUCE JOB
       Configuration conf = new Configuration();
       int res = ToolRunner.run(conf, new histogram(), args);
       System.exit(res);
-
    }
-
-
 }

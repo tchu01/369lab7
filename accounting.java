@@ -1,4 +1,5 @@
-// Author: Timothy Chu
+// Author: Timothy Chu & Michael Wong
+// Lab 7
 // CPE369 - Section 01
 
 import com.alexholmes.json.mapreduce.MultiLineJsonInputFormat;
@@ -43,13 +44,13 @@ public class accounting extends Configured implements Tool {
             throws IOException, InterruptedException {
          try {
             double cost = 0;
-            int count =  0;
+            int count = 0;
 
-            for(Text val: values) {
+            for (Text val : values) {
                cost += 0.05;
                String message = val.toString();
-               cost += (Math.ceil(message.length()/10.0)/100.0);
-               if(message.length() > 100) {
+               cost += (Math.ceil(message.length() / 10.0) / 100.0);
+               if (message.length() > 100) {
                   cost += 0.05;
                }
                count++;
@@ -83,17 +84,9 @@ public class accounting extends Configured implements Tool {
    }
 
    public static void main(String[] args) throws Exception {
-//      if (args.length != 2) {
-//         System.out.println("Input format is: <input file name> <output directory name>\n");
-//         System.exit(-1);
-//      }
-
       //RUN JSON MAP-REDUCE JOB
       Configuration conf = new Configuration();
       int res = ToolRunner.run(conf, new accounting(), args);
       System.exit(res);
-
    }
-
-
 }

@@ -1,4 +1,5 @@
-// Author: Timothy Chu
+// Author: Timothy Chu & Michael Wong
+// Lab 7
 // CPE369 - Section 01
 
 import com.alexholmes.json.mapreduce.MultiLineJsonInputFormat;
@@ -121,17 +122,9 @@ public class activity extends Configured implements Tool {
    }
 
    public static void main(String[] args) throws Exception {
-//      if (args.length != 2) {
-//         System.out.println("Input format is: <input file name> <output directory name>\n");
-//         System.exit(-1);
-//      }
-
       //RUN JSON MAP-REDUCE JOB
       Configuration conf = new Configuration();
       int res = ToolRunner.run(conf, new activity(), args);
       System.exit(res);
-
    }
-
-
 }

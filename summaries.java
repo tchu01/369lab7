@@ -1,4 +1,5 @@
-// Author: Timothy Chu
+// Author: Timothy Chu & Michael Wong
+// Lab 7
 // CPE369 - Section 01
 
 import com.alexholmes.json.mapreduce.MultiLineJsonInputFormat;
@@ -29,7 +30,9 @@ public class summaries extends Configured implements Tool {
          try {
             JSONObject json = new JSONObject(value.toString());
             context.write(new Text(json.getInt("game") + ""), value);
-         } catch (Exception e) {System.out.println(e); }
+         } catch (Exception e) {
+            System.out.println(e);
+         }
       }
    }
 
@@ -54,7 +57,7 @@ public class summaries extends Configured implements Tool {
                if (json.has("action")) {
                   movesSum++;
                   JSONObject action = json.getJSONObject("action");
-                  if(action.has("actionType")) {
+                  if (action.has("actionType")) {
                      String actionType = action.getString("actionType");
                      if (actionType.equals("Move")) {
                         regularMovesSum++;
@@ -105,17 +108,9 @@ public class summaries extends Configured implements Tool {
    }
 
    public static void main(String[] args) throws Exception {
-//      if (args.length != 2) {
-//         System.out.println("Input format is: <input file name> <output directory name>\n");
-//         System.exit(-1);
-//      }
-
       //RUN JSON MAP-REDUCE JOB
       Configuration conf = new Configuration();
       int res = ToolRunner.run(conf, new summaries(), args);
       System.exit(res);
-
    }
-
-
 }
